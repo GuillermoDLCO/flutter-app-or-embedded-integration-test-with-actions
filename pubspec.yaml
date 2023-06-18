@@ -1,5 +1,5 @@
 name: flutter_integration_actions
-description: A new Flutter module
+description: A new Flutter project.
 
 publish_to: 'none' 
 
@@ -22,8 +22,3 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   generate: true
-
-  
-  module:
-    androidX: true
-    androidPackage: com.flutter.module.example
