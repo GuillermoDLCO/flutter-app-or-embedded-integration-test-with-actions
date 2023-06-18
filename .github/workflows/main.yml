@@ -116,14 +116,6 @@ jobs:
           cache-key: 'flutter-:os:-:channel:-:version:-:arch:-:hash:'
           cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch: '
 
-      - name: Run setup script
-        run: ./setup_flutter_as_app.sh
-
-      - name: Build Android App
-        run: |
-          cd ./android_native_app
-          ./gradlew assembleDebug
-
       - name: Run tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
@@ -136,8 +128,11 @@ jobs:
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
           script: |
+            ./setup_flutter_as_app.sh
+            cd ./android_native_app
+            ./gradlew assembleDebug
             adb shell pm list packages | grep 'com.android.app.example' && adb uninstall com.android.app.example || echo "Application not found"
-            adb install ./android_native_app/app/build/outputs/apk/release/app-debug.apk
+            adb install ./app/build/outputs/apk/debug/app-debug.apk
             export MAESTRO_DRIVER_STARTUP_TIMEOUT=60000
             ~/.maestro/bin/maestro test ./integration_test/run-test.yml
 
