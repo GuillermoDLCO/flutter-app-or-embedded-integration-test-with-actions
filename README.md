@@ -8,5 +8,5 @@ Maestro integration testing will work in android native app and flutter embedded
 
 ## Pre-requisites
 
-- [Flutter 3.10.4](https://flutter.dev/docs/get-started/install)
+- [Flutter 3.10.3](https://flutter.dev/docs/get-started/install)
 - [Maestro](https://github.com/mobile-dev-inc/maestro)
