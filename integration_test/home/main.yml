@@ -1,5 +1,7 @@
 appId: "com.android.app.example"
 ---
+- waitForAnimationToEnd:
+    timeout: 2000
 - assertVisible: "Home Screen"
 - assertVisible: "Apps Screen"
 - assertVisible: "Movies Screen"
