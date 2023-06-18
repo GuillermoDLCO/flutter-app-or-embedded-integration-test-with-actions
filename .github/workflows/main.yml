@@ -26,15 +26,7 @@ jobs:
           target: android-tv
           profile: Android TV (1080p)
           arch: arm64-v8a
-
-      - name: Build APK
-        run: flutter build apk --release
-
-      - name: Install APK on Emulator
-        run: adb install build/app/outputs/flutter-apk/app-release.apk
-
-      - name: Run Maestro Script
-        run: maestro test ./integration_test/run-flow.yml
+          script: ./install_app_flutter_job.sh
 
   android_native_job:
     needs: flutter_job
@@ -64,11 +56,4 @@ jobs:
           target: android-tv
           profile: Android TV (1080p)
           arch: arm64-v8a
-
-      - name: Uninstall Old App and Install New App
-        run: |
-          adb uninstall com.android.app.example
-          adb install ./android_native_app/app/build/outputs/apk/release/app-release.apk
-
-      - name: Run Maestro Script
-        run: maestro test ./integration_test/run-flow.yml
+          script: ./install_app_android_job.sh
