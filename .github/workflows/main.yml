@@ -78,6 +78,7 @@ jobs:
           script: |
             flutter build apk --debug --target-platform=android-x86
             flutter install --debug
+            export MAESTRO_DRIVER_STARTUP_TIMEOUT=60000
             ~/.maestro/bin/maestro test ./integration_test/run-test.yml
       - name : Upload results
         if : ${{ always() }}
@@ -99,7 +100,7 @@ jobs:
       - name: Build Android App
         run: |
           cd ./android_native_app
-          ./gradlew assembleRelease
+          ./gradlew assembleDebug
 
       - name: Run tests
         uses: reactivecircus/android-emulator-runner@v2
@@ -114,7 +115,8 @@ jobs:
           disable-animations: true
           script: |
             adb uninstall com.android.app.example
-            adb install ./android_native_app/app/build/outputs/apk/release/app-release.apk
+            adb install ./android_native_app/app/build/outputs/apk/release/app-debug.apk
+            export MAESTRO_DRIVER_STARTUP_TIMEOUT=60000
             ~/.maestro/bin/maestro test ./integration_test/run-test.yml
 
       - name : Upload results
