@@ -25,7 +25,7 @@ jobs:
           api-level: 29
           target: google_apis
           profile: tv_1080p
-          arch: x86_64
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
           script: ./install_app_flutter_job.sh
 
   android_native_job:
@@ -55,5 +55,5 @@ jobs:
           api-level: 29
           target: google_apis
           profile: tv_1080p
-          arch: x86_64
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
           script: ./install_app_android_job.sh
