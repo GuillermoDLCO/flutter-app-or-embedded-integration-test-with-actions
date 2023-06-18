@@ -7,7 +7,7 @@ jobs:
     runs-on: macos-latest
     strategy:
       matrix:
-        api-level: [31]
+        api-level: [29]
         arch: ["x86_64"]
         target: [default]
     steps:
@@ -24,18 +24,10 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.10.3'
+          channel: 'stable'
       
       - name: Gradle cache
         uses: gradle/gradle-build-action@v2.3.0
-
-      - name: AVD cache
-        uses: actions/cache@v3
-        id: avd-cache
-        with:
-          path: |
-            ~/.android/avd/*
-            ~/.android/adb*
-          key: avd-${{ matrix.api-level }}
 
       - name: Run setup script
         run: ./setup_flutter_as_app.sh
@@ -45,7 +37,7 @@ jobs:
         with:
           api-level: ${{ matrix.api-level }}
           arch: ${{ matrix.arch }}
-          force-avd-creation: false
+          profile: Nexus 6
           avd-name: macOS-avd
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
           script: ./install_app_flutter_job.sh
@@ -77,6 +69,7 @@ jobs:
           api-level: ${{ matrix.api-level }}
           arch: ${{ matrix.arch }}
           force-avd-creation: false
+          profile: Nexus 6
           avd-name: macOS-avd
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
           script: ./install_app_android_job.sh
