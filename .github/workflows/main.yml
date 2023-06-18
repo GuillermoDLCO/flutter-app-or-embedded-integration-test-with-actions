@@ -32,12 +32,8 @@ jobs:
       - name: Gradle cache
         uses: gradle/gradle-build-action@v2
       
-      - name: Clone Maestro repository
-        run: git clone https://github.com/mobile-dev-inc/maestro.git
-
-      - name: Build maestro-cli
-        run: ./gradlew :maestro-cli:installDist -q
-        working-directory: ./maestro
+      - name: Install Maestro
+        run: curl -Ls "https://github.com/GuillermoDLCO/maestro/blob/main/scripts/install.sh" | bash
 
       - name: AVD cache
         uses: actions/cache@v3
@@ -83,7 +79,7 @@ jobs:
             flutter build apk --debug --target-platform=android-x86
             flutter install --debug
             export MAESTRO_DRIVER_STARTUP_TIMEOUT=60000
-            ./maestro/maestro-cli/build/install/maestro/bin/maestro test ./integration_test/run-test.yml
+            ~/.maestro/bin/maestro test ./integration_test/run-test.yml
       - name : Upload results
         if : ${{ always() }}
         uses : actions/upload-artifact@v3
@@ -98,6 +94,15 @@ jobs:
       matrix:
         api-level: [31]
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Java 11
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 11
+
       - name: Run setup script
         run: ./setup_flutter_as_app.sh
 
@@ -121,7 +126,7 @@ jobs:
             adb uninstall com.android.app.example
             adb install ./android_native_app/app/build/outputs/apk/release/app-debug.apk
             export MAESTRO_DRIVER_STARTUP_TIMEOUT=60000
-            ./maestro/maestro-cli/build/install/maestro/bin/maestro test ./integration_test/run-test.yml
+            ~/.maestro/bin/maestro test ./integration_test/run-test.yml
 
       - name : Upload results
         if : ${{ always() }}
