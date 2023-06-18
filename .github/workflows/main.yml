@@ -76,8 +76,8 @@ jobs:
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
           script: |
-            flutter build apk --release --target-platform=android-x86
-            adb install build/app/outputs/flutter-apk/app-release.apk
+            flutter build apk --profile
+            flutter build install
             ~/.maestro/bin/maestro test ./integration_test/run-flow.yml
       - name : Upload results
         if : ${{ always() }}

@@ -19,7 +19,7 @@
         android:fullBackupContent="false"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="SiTS Room"
+        android:label="Github Actions example"
         android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
