@@ -22,7 +22,7 @@ jobs:
       - name: Setup Android Emulator
         uses: reactivecircus/android-emulator-runner@v2.28.0
         with:
-          api-level: 31
+          api-level: 29
           target: google_apis
           profile: tv_1080p
           arch: x86_64
@@ -52,7 +52,7 @@ jobs:
       - name: Setup Android Emulator
         uses: reactivecircus/android-emulator-runner@v2.28.0
         with:
-          api-level: 31
+          api-level: 29
           target: google_apis
           profile: tv_1080p
           arch: x86_64
