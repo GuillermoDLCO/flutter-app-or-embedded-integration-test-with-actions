@@ -39,7 +39,8 @@ jobs:
         with:
           api-level: ${{ matrix.api-level }}
           target: android-tv
-          arch: x86_64
+          profile: tv_1080p
+          arch: x86
           force-avd-creation: false
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: false
@@ -51,7 +52,8 @@ jobs:
         with:
           api-level: ${{ matrix.api-level }}
           target: android-tv
-          arch: x86_64
+          arch: x86
+          profile: tv_1080p
           force-avd-creation: false
           avd-name: macos-ci-avd
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
