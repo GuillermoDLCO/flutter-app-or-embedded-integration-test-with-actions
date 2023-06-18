@@ -2,6 +2,11 @@ name: CI
 
 on: [push, workflow_dispatch]
 
+# If CI is already running for a branch when that branch is updated, cancel the older jobs.
+concurrency:
+  group: ci-${{ github.ref }}-${{ github.head_ref }}
+  cancel-in-progress: true
+
 jobs:
   flutter_job:
     runs-on: macos-latest
@@ -30,6 +35,7 @@ jobs:
       - name: Install Maestro
         run: |
           curl -Ls "https://get.maestro.mobile.dev" | bash
+          echo "Downloaded Maestro. Adding to PATH."
           export PATH="$PATH":"$HOME/.maestro/bin"
 
       - name: AVD cache
@@ -69,7 +75,16 @@ jobs:
           avd-name: macos-ci-avd
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
-          script: ./install_app_flutter_job.sh
+          script: |
+            flutter build apk --release
+            adb install build/app/outputs/flutter-apk/app-release.apk
+            maestro test ./integration_test/run-flow.yml
+      - name : Upload results
+        if : ${{ always() }}
+        uses : actions/upload-artifact@v3
+        with :
+          name : integration_testing_results-${{ matrix.api-level }}
+          path : ~/.maestro/test**
 
   android_native_job:
     needs: flutter_job
@@ -106,3 +121,14 @@ jobs:
           avd-name: macos-ci-avd
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
+          script: |
+            adb uninstall com.android.app.example
+            adb install ./android_native_app/app/build/outputs/apk/release/app-release.apk
+            maestro test ./integration_test/run-flow.yml
+
+      - name : Upload results
+        if : ${{ always() }}
+        uses : actions/upload-artifact@v3
+        with :
+          name : integration_testing_results-2-${{ matrix.api-level }}
+          path : ~/.maestro/test**
