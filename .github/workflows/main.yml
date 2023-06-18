@@ -23,7 +23,7 @@ jobs:
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 29
-          target: google-tv
+          target: android-tv
           profile: tv_1080p
           script: ./install_app_flutter_job.sh
 
@@ -52,6 +52,6 @@ jobs:
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 29
-          target: google-tv
+          target: android-tv
           profile: tv_1080p
           script: ./install_app_android_job.sh
