@@ -77,7 +77,7 @@ jobs:
           disable-animations: true
           script: |
             flutter build apk --profile
-            flutter build install
+            flutter install --profile
             ~/.maestro/bin/maestro test ./integration_test/run-flow.yml
       - name : Upload results
         if : ${{ always() }}
