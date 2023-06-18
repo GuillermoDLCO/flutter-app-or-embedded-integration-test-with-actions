@@ -22,9 +22,8 @@ jobs:
       - name: Setup Android Emulator
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 30
-          target: android-tv
-          profile: tv_1080p
+          api-level: 31
+          profile: Nexus 6
           script: ./install_app_flutter_job.sh
 
   android_native_job:
@@ -51,7 +50,6 @@ jobs:
       - name: Setup Android Emulator
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 30
-          target: android-tv
-          profile: tv_1080p
+          api-level: 31
+          profile: Nexus 6
           script: ./install_app_android_job.sh
