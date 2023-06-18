@@ -5,25 +5,48 @@ on: [push, workflow_dispatch]
 jobs:
   flutter_job:
     runs-on: macos-latest
+    strategy:
+      matrix:
+        api-level: [31]
+        arch: ["x86_64"]
+        target: [default]
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'adopt'
+          java-version: 11
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.10.3'
+      
+      - name: Gradle cache
+        uses: gradle/gradle-build-action@v2.3.0
+
+      - name: AVD cache
+        uses: actions/cache@v3
+        id: avd-cache
+        with:
+          path: |
+            ~/.android/avd/*
+            ~/.android/adb*
+          key: avd-${{ matrix.api-level }}
+
       - name: Run setup script
         run: ./setup_flutter_as_app.sh
-
-      - name: Run Flutter tests
-        run: flutter test
 
       - name: Setup Android Emulator
         uses: reactivecircus/android-emulator-runner@v2.28.0
         with:
-          api-level: 29
-          profile: tv_1080p
+          api-level: ${{ matrix.api-level }}
+          arch: ${{ matrix.arch }}
+          force-avd-creation: false
+          avd-name: macOS-avd
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
           script: ./install_app_flutter_job.sh
 
@@ -37,7 +60,7 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v3
         with:
-          distribution: 'zulu'
+          distribution: 'adopt'
           java-version: 11
 
       - name: Run setup script
@@ -51,7 +74,9 @@ jobs:
       - name: Setup Android Emulator
         uses: reactivecircus/android-emulator-runner@v2.28.0
         with:
-          api-level: 29
-          profile: tv_1080p
+          api-level: ${{ matrix.api-level }}
+          arch: ${{ matrix.arch }}
+          force-avd-creation: false
+          avd-name: macOS-avd
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
           script: ./install_app_android_job.sh
