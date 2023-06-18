@@ -1,0 +1,7 @@
+appId: "com.android.app.example"
+---
+- tapOn: "Apps Screen"
+- assertVisible: "Apps"
+- assertVisible: "Netflix"
+- assertVisible: "Disney+"
+- back

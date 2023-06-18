@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+
+    <!-- Transparencies
+   http://stackoverflow.com/a/16890937
+   -->
+    <color name="white">#FFFFFF</color>
+    <color name="red">#ff0000</color>
+
+    <color name="black_light">#2d2d2d</color>
+    <color name="black">#000000</color>
+    <color name="black_20">#33000000</color>
+    <color name="black_50">#80000000</color>
+    <color name="black_55">#8C000000</color>
+    <color name="black_70">#B3000000</color>
+    <color name="black_85">#d9000000</color>
+    <color name="black_90">#e6000000</color>
+
+    <color name="yellow_categories">#fbfcc4</color>
+
+    <color name="gray_1">#5f5f5f</color>
+    <color name="gray_2">#c9c9c9</color>
+    <color name="gray_3">#d3d3d3</color>
+    <color name="gray_e5">#e5e5e5</color>
+    <color name="gray_f1">#f1f1f1</color>
+
+    <color name="green">#c4dfc4</color>
+
+
+    <color name="brown_light">#a5937b</color>
+    <color name="brown_strong">#7e6b5a</color>
+    <color name="brown_strong_90">#E67e6b5a</color>
+
+
+    <color name="green_5a9a80">#5a9a80</color>
+
+    <color name="md_blue_500">#2196F3</color>
+    <color name="md_blue_800">#1565C0</color>
+
+    <color name="md_light_blue_A700">#0091EA</color>
+
+    <color name="order_status_waiting_approve">#F39710</color>
+    <color name="order_status_processing">#049BCE</color>
+    <color name="order_status_delivering">#6401C9</color>
+    <color name="order_status_ready">#6401C9</color>
+    <color name="order_status_completed">#059A33</color>
+    <color name="order_status_canceled">#D63E42</color>
+</resources>

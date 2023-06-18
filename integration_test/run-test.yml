@@ -1,0 +1,7 @@
+appId: "com.android.app.example"
+---
+- launchApp:
+    clearState : true
+- runFlow: "home/main.yml"
+- runFlow: "apps/main.yml"
+- runFlow: "movies/main.yml"

@@ -1,0 +1,69 @@
+name: CI
+
+on: [push, workflow_dispatch]
+
+jobs:
+  flutter_job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v1
+        with:
+          flutter-version: '3.10.3'
+
+      - name: Run Flutter tests
+        run: flutter test
+
+      - name: Setup Android Emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 31
+          target: android-tv
+          profile: Android TV (1080p)
+          arch: arm64-v8a
+
+      - name: Build APK
+        run: flutter build apk --release
+
+      - name: Install APK on Emulator
+        run: adb install build/app/outputs/flutter-apk/app-release.apk
+
+      - name: Run Maestro Script
+        run: maestro test ./integration_test/run-flow.yml
+
+  android_native_job:
+    needs: flutter_job
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 11
+
+      - name: Build Android App
+        run: |
+          cd ./android_native_app
+          ./gradlew assembleRelease
+
+      - name: Setup Android Emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 31
+          target: android-tv
+          profile: Android TV (1080p)
+          arch: arm64-v8a
+
+      - name: Uninstall Old App and Install New App
+        run: |
+          adb uninstall com.android.app.example
+          adb install ./android_native_app/app/build/outputs/apk/release/app-release.apk
+
+      - name: Run Maestro Script
+        run: maestro test ./integration_test/run-flow.yml

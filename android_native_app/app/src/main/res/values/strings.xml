@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Humble House</string>
+    <string name="title_item_detail">Item Detail</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="hello_zinwell">Zinwell DTV demo</string>
+    <string name="button_name1">Test Button</string>
+    <string name="okey_button">OK</string>
+    <string name="select_freq_title">Select Frequency</string>
+    <string name="select_bw_title">Select Bandwidth</string>
+
+    <!--## Do not translate ##-->
+    <string name="english_no_translate" translatable="false">English</string>
+    <string name="spanish_no_translate" translatable="false">Español</string>
+    <string name="chinese_traditional_no_translate" translatable="false">繁體中文</string>
+    <string name="chinese_simplified_no_translate" translatable="false">簡體中文</string>
+    <!--### End do not translate ##-->
+
+
+</resources>

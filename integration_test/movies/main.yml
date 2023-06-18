@@ -1,0 +1,7 @@
+appId: "com.android.app.example"
+---
+- tapOn: "Movies Screen"
+- assertVisible: "Movies Screen"
+- assertVisible: "Movie 1"
+- assertVisible: "Movie 2"
+- back
