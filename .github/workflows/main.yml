@@ -12,6 +12,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'adopt'
+          java-version: 11
+
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -68,6 +74,9 @@ jobs:
   android_native_job:
     needs: flutter_job
     runs-on: macos-latest
+    strategy:
+      matrix:
+        api-level: [31]
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -86,10 +95,14 @@ jobs:
           cd ./android_native_app
           ./gradlew assembleRelease
 
-      - name: Setup Android Emulator
-        uses: reactivecircus/android-emulator-runner@v2.28.0
+      - name: Run tests
+        uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 29
+          api-level: ${{ matrix.api-level }}
+          target: android-tv
+          arch: x86
+          profile: tv_1080p
           force-avd-creation: false
-          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
-          script: ./install_app_android_job.sh
+          avd-name: macos-ci-avd
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: true
