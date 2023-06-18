@@ -9,7 +9,7 @@ concurrency:
 
 jobs:
   flutter_job:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         api-level: [31]
@@ -17,13 +17,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Setup Java
+      - name: Setup Java 11
         uses: actions/setup-java@v3
         with:
-          distribution: 'adopt'
+          distribution: 'zulu'
           java-version: 11
 
-      - name: Setup Flutter
+      - name: Setup Flutter 3.10.3
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.10.3'
@@ -35,8 +35,6 @@ jobs:
       - name: Install Maestro
         run: |
           curl -Ls "https://get.maestro.mobile.dev" | bash
-          echo "Downloaded Maestro. Adding to PATH."
-          export PATH="$PATH":"$HOME/.maestro/bin"
 
       - name: AVD cache
         uses: actions/cache@v3
@@ -64,7 +62,10 @@ jobs:
           avd-name: macos-ci-avd
           script: echo "Generated AVD snapshot for caching."
 
-      - name: Run tests
+      - name: Run Flutter tests
+        run: flutter test
+
+      - name: Run integration tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: ${{ matrix.api-level }}
@@ -76,19 +77,19 @@ jobs:
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
           script: |
-            flutter build apk --release
+            flutter build apk --release --target-platform=android-x86
             adb install build/app/outputs/flutter-apk/app-release.apk
-            maestro test ./integration_test/run-flow.yml
+            ~/.maestro/bin/maestro test ./integration_test/run-flow.yml
       - name : Upload results
         if : ${{ always() }}
         uses : actions/upload-artifact@v3
         with :
           name : integration_testing_results-${{ matrix.api-level }}
-          path : ~/.maestro/test**
+          path : ~/.maestro/tests/**
 
   android_native_job:
     needs: flutter_job
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         api-level: [31]
@@ -99,7 +100,7 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v3
         with:
-          distribution: 'adopt'
+          distribution: 'zulu'
           java-version: 11
 
       - name: Run setup script
@@ -124,11 +125,11 @@ jobs:
           script: |
             adb uninstall com.android.app.example
             adb install ./android_native_app/app/build/outputs/apk/release/app-release.apk
-            maestro test ./integration_test/run-flow.yml
+            ~/.maestro/bin/maestro test ./integration_test/run-flow.yml
 
       - name : Upload results
         if : ${{ always() }}
         uses : actions/upload-artifact@v3
         with :
           name : integration_testing_results-2-${{ matrix.api-level }}
-          path : ~/.maestro/test**
+          path : ~/.maestro/tests/**
