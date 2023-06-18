@@ -20,10 +20,12 @@ jobs:
         run: flutter test
 
       - name: Setup Android Emulator
-        uses: reactivecircus/android-emulator-runner@v2
+        uses: reactivecircus/android-emulator-runner@v2.28.0
         with:
           api-level: 31
-          profile: Nexus 6
+          target: google-tv
+          profile: tv_1080p
+          arch: arm64-v8a
           script: ./install_app_flutter_job.sh
 
   android_native_job:
@@ -48,8 +50,10 @@ jobs:
           ./gradlew assembleRelease
 
       - name: Setup Android Emulator
-        uses: reactivecircus/android-emulator-runner@v2
+        uses: reactivecircus/android-emulator-runner@v2.28.0
         with:
           api-level: 31
-          profile: Nexus 6
+          target: google-tv
+          profile: tv_1080p
+          arch: arm64-v8a
           script: ./install_app_android_job.sh
