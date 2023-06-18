@@ -22,10 +22,10 @@ jobs:
       - name: Setup Android Emulator
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 31
+          api-level: 30
           target: google-tv
           profile: tv_1080p
-          arch: x86_64
+          arch: arm64-v8a
           script: ./install_app_flutter_job.sh
 
   android_native_job:
@@ -52,8 +52,8 @@ jobs:
       - name: Setup Android Emulator
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 31
+          api-level: 30
           target: google-tv
           profile: tv_1080p
-          arch: x86_64
+          arch: arm64-v8a
           script: ./install_app_android_job.sh
