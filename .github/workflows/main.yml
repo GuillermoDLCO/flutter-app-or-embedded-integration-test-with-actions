@@ -76,6 +76,7 @@ jobs:
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
           script: |
+            adb shell pm list packages | grep 'com.android.app.example' && adb uninstall com.android.app.example || echo "Application not found"
             flutter build apk --debug --target-platform=android-x86
             flutter install --debug
             export MAESTRO_DRIVER_STARTUP_TIMEOUT=60000
@@ -123,7 +124,7 @@ jobs:
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
           script: |
-            adb uninstall com.android.app.example
+            adb shell pm list packages | grep 'com.android.app.example' && adb uninstall com.android.app.example || echo "Application not found"
             adb install ./android_native_app/app/build/outputs/apk/release/app-debug.apk
             export MAESTRO_DRIVER_STARTUP_TIMEOUT=60000
             ~/.maestro/bin/maestro test ./integration_test/run-test.yml
