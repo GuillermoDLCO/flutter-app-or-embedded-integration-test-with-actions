@@ -144,6 +144,9 @@ jobs:
           disable-animations: false
           avd-name: macos-ci-avd
           script: echo "Generated AVD snapshot for caching."
+          
+      - name: Run Setup app as module
+        run: ./setup_flutter_as_module.sh
 
       - name: Run tests
         uses: reactivecircus/android-emulator-runner@v2
@@ -156,14 +159,13 @@ jobs:
           avd-name: macos-ci-avd
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
+          working-directory: ./android_native_app
           script: |
-            ./setup_flutter_as_app.sh
-            cd ./android_native_app
             ./gradlew assembleDebug
             adb shell pm list packages | grep 'com.android.app.example' && adb uninstall com.android.app.example || echo "Application not found"
             adb install ./app/build/outputs/apk/debug/app-debug.apk
             export MAESTRO_DRIVER_STARTUP_TIMEOUT=60000
-            ~/.maestro/bin/maestro test ./integration_test/run-test.yml
+            ~/.maestro/bin/maestro test ../integration_test/run-test.yml
 
       - name : Upload results
         if : ${{ always() }}
